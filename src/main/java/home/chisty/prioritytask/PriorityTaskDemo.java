@@ -14,7 +14,7 @@ public class PriorityTaskDemo {
     IntStream.range(0, 5)
         .forEach(
             i -> {
-              int priority = random.nextInt(1, 11);
+              int priority = random.nextInt(1, 100);
               processor.submitTask(new Task(i, priority, "Task " + i));
             });
 
