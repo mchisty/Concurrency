@@ -4,28 +4,27 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 public class PriorityTaskDemo {
-  private static final int NUMBER_OF_THREADS = 4;
+    private static final int NUMBER_OF_THREADS = 4;
 
-  public static void main(String[] args) throws InterruptedException {
-    PriorityTaskProcessor processor = new PriorityTaskProcessor(NUMBER_OF_THREADS);
-    Random random = new Random();
+    public static void main(String[] args) throws InterruptedException {
+        try (PriorityTaskProcessor processor = new PriorityTaskProcessor(NUMBER_OF_THREADS)) {
+            Random random = new Random();
 
-    // Submit tasks with random priorities
-    IntStream.range(0, 5)
-        .forEach(
-            i -> {
-              int priority = random.nextInt(1, 100);
-              processor.submitTask(new Task(i, priority, "Task " + i));
+            // Submit tasks with random priorities
+            IntStream.range(0, 5).forEach(i -> {
+                int priority = random.nextInt(1, 10);
+                processor.submitTask(new Task(i, priority, "Task " + i));
             });
 
-    processor.startProcessing();
+            processor.startProcessing();
 
-    // Let tasks process for a while
-    Thread.sleep(500);
+            // Let tasks process for a while
+            Thread.sleep(500);
 
-    processor.shutdown();
+            //        processor.shutdown();
 
-    // Print results
-    processor.getResults().forEach(System.out::println);
-  }
+            // Print results
+            processor.getResultConcurrentLinkedQueue().forEach(System.out::println);
+        }
+    }
 }

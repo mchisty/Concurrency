@@ -12,22 +12,47 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <google-java-format.version>1.17.0</google-java-format.version>
+        <spotless.version>2.43.0</spotless.version>
     </properties>
 
     <build>
         <plugins>
             <plugin>
-                <groupId>com.google.googlejavaformat</groupId>
-                <artifactId>google-java-format-maven-plugin</artifactId>
-                <version>${google-java-format.version}</version>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>${spotless.version}</version>
+                <configuration>
+                    <java>
+                        <removeUnusedImports/>
+                        <importOrder>
+                            <order>java,javax,org,com,</order>
+                        </importOrder>
+                        <trimTrailingWhitespace/>
+                        <endWithNewline/>
+                        <indent>
+                            <spaces>true</spaces>
+                            <spacesPerTab>4</spacesPerTab>
+                        </indent>
+                        <palantirJavaFormat/>
+                    </java>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
-                            <goal>format</goal>
+                            <goal>check</goal>
                         </goals>
+                        <phase>compile</phase>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>21</source>
+                    <target>21</target>
+                    <compilerArgs>--enable-preview</compilerArgs>
+                </configuration>
             </plugin>
         </plugins>
     </build>
